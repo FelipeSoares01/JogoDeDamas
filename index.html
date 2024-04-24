@@ -26,15 +26,10 @@
             </div>
         </nav>
     </header>
-    <div id="mostrarPlacar">
-        <p id="nomeJogador1" class="jogadorPlacar">Jogador 1</p>
-        <p class="pontosPlacar">0-0</p>
-        <p id="nomeJogador2" class="jogadorPlacar">Jogador 2</p>
-    </div>
     <div class="container">
         <div class="next-player counter">
+            Vez da dama: 
             <div class="occupied whitePiece" id="next-player"></div>
-            <span id="player-name">Player</span>
         </div>
         <div class="game" id="game"></div>
         <div class="counter">
@@ -51,12 +46,11 @@
     <div id="easyModal" class="modal">
         <div class="modal-content">
             <div class="modal-body">
-                <p>The <strong id="winner"></strong> player won the game !!</p>
-                <p> <span id="loser"></span>, whould you take your revenge ???</p>
-
+                <p>O jogador da dama <strong id="winner"></strong> ganhou !!</p>
+                <p> <span id="loser"></span>, gostaria de uma revanche ???</p>
                 <div class="btn-container">
-                    <button class="btn" onclick="location.reload()">Yes </button>
-                    <button class="btn" onclick="modalClose()">No</button>
+                    <button class="btn" onclick="location.reload()">Sim</button>
+                    <button class="btn" onclick="modalClose()">Não</button>
                 </div>
             </div>
         </div>
@@ -64,8 +58,7 @@
     <footer>
         <p>Feito por: Felipe Serrano, Felipe Augusto, Eduardo Busemayer</p>
     </footer>
-    <script src="function.js"></script>
-    <script src="script.js"></script>
+    <script type="module" src="js/Main.js"></script>
 </body>
 
 </html>
