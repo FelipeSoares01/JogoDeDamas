@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo de Damas</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header>
+        <h1>Jogo de Damas</h1>
+        <nav>
+            <div>
+                <img src="imagens/group.png" alt="jogador vs jogador" width="35px">
+                <button class="botao-nav" type="button" id="jogador">Jogador vs Jogador</button>
+            </div>
+            <div>
+                <img src="imagens/reloading.png" alt="Reiniciar" width="35px">
+                <button class="botao-nav" type="button" id="restart">Reiniciar</button>
+            </div>
+            <div>
+                <img src="imagens/machine-learning.png" alt="jogador vs maquina" width="35px">
+                <button class="botao-nav" type="button">Jogador vs Maquina</button>
+            </div>
+        </nav>
+    </header>
+    <div id="mostrarPlacar">
+        <p id="nomeJogador1" class="jogadorPlacar">Jogador 1</p>
+        <p class="pontosPlacar">0-0</p>
+        <p id="nomeJogador2" class="jogadorPlacar">Jogador 2</p>
+    </div>
+    <div class="container">
+        <div class="next-player counter">
+            <div class="occupied whitePiece" id="next-player"></div>
+            <span id="player-name">Player</span>
+        </div>
+        <div class="game" id="game"></div>
+        <div class="counter">
+            <div>
+                <div class="occupied whitePiece"></div>
+                <span id="white-player-count-pieces">10</span>
+            </div>
+            <div>
+                <div class="occupied blackPiece"></div>
+                <span id="black-player-count-pieces">10</span>
+            </div>
+        </div>
+    </div>
+    <div id="easyModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-body">
+                <p>The <strong id="winner"></strong> player won the game !!</p>
+                <p> <span id="loser"></span>, whould you take your revenge ???</p>
+
+                <div class="btn-container">
+                    <button class="btn" onclick="location.reload()">Yes </button>
+                    <button class="btn" onclick="modalClose()">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <p>Feito por: Felipe Serrano, Felipe Augusto, Eduardo Busemayer</p>
+    </footer>
+    <script src="function.js"></script>
+    <script src="script.js"></script>
+</body>
+
+</html>
