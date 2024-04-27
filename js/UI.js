@@ -16,7 +16,6 @@ class UI {
             row.setAttribute("class", "row");
 
             for (let j = 0; j < element.length; j++) {
-                const elmt = element[j];
                 let col = document.createElement("div"); // create div for each case
                 let piece = document.createElement("div");
                 let caseType = "";
@@ -53,7 +52,14 @@ class UI {
                 piece.setAttribute("data-position", i + "-" + j);
 
                 //add event listener to each piece
-                piece.addEventListener("click", this.game.movePiece.bind(this.game));
+                piece.addEventListener("click", (event) => {
+                    if (this.game.currentPlayer === -1 && this.game.iaEnabled) {
+                        // Se for a vez da IA jogar, não fazer nada ao clicar na peça preta
+                        return;
+                    }
+                    // Caso contrário, chamar a função movePiece normalmente
+                    this.game.movePiece(event);
+                });
 
                 col.appendChild(piece);
 
