@@ -20,9 +20,9 @@ document.querySelector('#jogador').addEventListener('click', ()=> {
 document.querySelector('#maquina').addEventListener('click', () => {
     board = new Board();
     ui = new UI(); 
-    game.gameStarted = true;
     game = new Game(board, ui); 
-    game.iaEnabled = true; // Ativa o modo de jogo contra a IA
+    game.iaEnabled = true; // Ativa o modo de jogo contra a IA após a criação do jogo
+    game.gameStarted = true;
     ui.game = game;
     ui.buildBoard();
 });

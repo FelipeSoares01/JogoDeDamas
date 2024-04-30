@@ -103,6 +103,9 @@ class Game {
     }
 
     findPossibleNewPosition(piece, player) {
+        console.log(`Verificando posições possíveis para a peça: row ${piece.row}, column ${piece.column}`);
+        let positions = [];
+    
         if (
             piece.row + player >= 0 &&
             piece.row + player < this.board.board.length &&
@@ -110,10 +113,11 @@ class Game {
             piece.column + 1 < this.board.board[0].length &&
             this.board.board[piece.row + player][piece.column + 1] === 0
         ) {
-            this.readyToMove = piece;
+            positions.push(new Piece(piece.row + player, piece.column + 1));
             this.ui.markPossiblePosition(piece, player, 1);
+            console.log(`Posição válida encontrada: row ${piece.row + player}, column ${piece.column + 1}`);
         }
-
+    
         if (
             piece.row + player >= 0 &&
             piece.row + player < this.board.board.length &&
@@ -121,10 +125,20 @@ class Game {
             piece.column - 1 < this.board.board[0].length &&
             this.board.board[piece.row + player][piece.column - 1] === 0
         ) {
-            this.readyToMove = piece;
+            positions.push(new Piece(piece.row + player, piece.column - 1));
             this.ui.markPossiblePosition(piece, player, -1);
+            console.log(`Posição válida encontrada: row ${piece.row + player}, column ${piece.column - 1}`);
         }
+    
+        // Se posições válidas foram encontradas, atualize readyToMove e posNewPosition
+        if (positions.length > 0) {
+            this.readyToMove = piece;
+            this.posNewPosition = positions;
+        }
+    
+        console.log(`Total de posições novas possíveis: ${this.posNewPosition.length}`);
     }
+    
 
     findPieceCaptured(p, player) {
         let found = false;
@@ -204,58 +218,71 @@ class Game {
     }
 
     makeRandomMoveForAI() {
+        console.log('Iniciando makeRandomMoveForAI...');
         // Encontrar todas as peças pretas disponíveis para mover
         let blackPieces = [];
         for (let i = 0; i < this.board.board.length; i++) {
             for (let j = 0; j < this.board.board[i].length; j++) {
                 if (this.board.board[i][j] === -1) {
                     blackPieces.push(new Piece(i, j));
+                    console.log(`Peça preta encontrada: row ${i}, column ${j}`);
                 }
             }
         }
-
-        // Filtrar as peças que podem capturar ou mover-se para uma posição vazia na diagonal abaixo
-        let eligiblePieces = [];
-        for (let piece of blackPieces) {
-            if (this.findPieceCaptured(piece, -1) || this.findPossibleNewPosition(piece, -1)) {
-                eligiblePieces.push(piece);
-            }
-        }
-
+    
+        console.log(`Total de peças pretas: ${blackPieces.length}`);
+    
+        // Filtrar as peças que podem se mover para uma posição vazia na diagonal abaixo
+        let eligiblePieces = blackPieces.filter(piece => {
+            let downLeft = (piece.row + 1 < this.board.board.length && piece.column - 1 >= 0 && this.board.board[piece.row + 1][piece.column - 1] === 0);
+            let downRight = (piece.row + 1 < this.board.board.length && piece.column + 1 < this.board.board[0].length && this.board.board[piece.row + 1][piece.column + 1] === 0);
+            return downLeft || downRight;
+        });
+    
+        console.log(`Peças elegíveis para movimento: ${eligiblePieces.length}`);
+    
         // Escolher uma peça aleatória entre as elegíveis
         if (eligiblePieces.length > 0) {
             const randomPieceIndex = Math.floor(Math.random() * eligiblePieces.length);
             const pieceToMove = eligiblePieces[randomPieceIndex];
-
+            console.log(`Peça escolhida para mover: row ${pieceToMove.row}, column ${pieceToMove.column}`);
+        
             // Encontrar todas as novas posições possíveis para a peça escolhida
             let possibleNewPositions = [];
-            this.findPossibleNewPosition(pieceToMove, -1); // -1 representa o jogador preto
-            possibleNewPositions = this.posNewPosition;
-
-            // Filtrar as posições que não contêm uma peça de tipo diferente
-            possibleNewPositions = possibleNewPositions.filter(pos => this.board.board[pos.row][pos.column] !== 1); // 1 representa uma peça branca
-
-            // Escolher uma nova posição aleatória para a peça
+        
+            // Verificar se a peça pode se mover para a diagonal abaixo à esquerda
+            if (pieceToMove.row + 1 < this.board.board.length && pieceToMove.column - 1 >= 0 && this.board.board[pieceToMove.row + 1][pieceToMove.column - 1] === 0) {
+                possibleNewPositions.push(new Piece(pieceToMove.row + 1, pieceToMove.column - 1));
+            }
+        
+            // Verificar se a peça pode se mover para a diagonal abaixo à direita
+            if (pieceToMove.row + 1 < this.board.board.length && pieceToMove.column + 1 < this.board.board[0].length && this.board.board[pieceToMove.row + 1][pieceToMove.column + 1] === 0) {
+                possibleNewPositions.push(new Piece(pieceToMove.row + 1, pieceToMove.column + 1));
+            }
+        
+            console.log(`Posições novas possíveis: ${possibleNewPositions.length}`);
+        
+            // Escolher uma nova posição aleatória para a peça, se houver posições disponíveis
             if (possibleNewPositions.length > 0) {
                 const randomNewPositionIndex = Math.floor(Math.random() * possibleNewPositions.length);
                 const newPosition = possibleNewPositions[randomNewPositionIndex];
-
+                console.log(`Movendo peça para: row ${newPosition.row}, column ${newPosition.column}`);
+        
                 // Mover a peça para a nova posição escolhida
-                this.moveThePiece(newPosition);
+                this.board.board[pieceToMove.row][pieceToMove.column] = 0; // Remover a peça da posição atual
+                this.board.board[newPosition.row][newPosition.column] = -1; // Mover a peça para a nova posição
+        
+                // Atualizar a exibição do tabuleiro após o movimento
+                this.ui.buildBoard();
+                this.currentPlayer = this.reverse(this.currentPlayer);
             } else {
-                // Se não houver movimentos possíveis para a peça escolhida, tentar capturar uma peça adversária
-                this.findPieceCaptured(pieceToMove, -1);
-                // Filtrar as peças capturadas que são de tipo diferente
-                let capturedPieces = this.capturedPosition.filter(captured => this.board.board[captured.pieceCaptured.row][captured.pieceCaptured.column] !== -1);
-                if (capturedPieces.length > 0) {
-                    this.moveThePiece(capturedPieces[0].newPosition); // Escolher a primeira peça capturada que é de tipo diferente
-                } else {
-                    this.ui.buildBoard(); // Não há peças para capturar, então apenas reconstruímos o tabuleiro
-                }
+                console.log('Nenhuma posição válida encontrada, reconstruindo o tabuleiro...');
+                // Se não houver movimentos possíveis, reconstruir o tabuleiro
+                this.ui.buildBoard();
             }
         }
     }
-
+       
     reverse(player) {
         return player === -1 ? 1 : -1;
     }
