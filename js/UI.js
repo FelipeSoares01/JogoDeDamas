@@ -1,25 +1,25 @@
-import Piece from './Piece.js';
+import Dama from './Dama.js';
 class UI {
-    constructor(game) {
-        this.game = game;
-        this.modal = document.getElementById("easyModal");
-        this.gameElement = document.getElementById("game");
+    constructor(jogo) {
+        this.jogo = jogo;
+        this.modelo = document.getElementById("modeloInicial");
+        this.jogoElemento = document.getElementById("jogo");
     }
 
-    buildBoard() {
-        this.gameElement.innerHTML = "";
+    construirTabuleiro() {
+        this.jogoElemento.innerHTML = "";
         let black = 0;
         let white = 0;
-        for (let i = 0; i < this.game.board.board.length; i++) {
-            const element = this.game.board.board[i];
-            let row = document.createElement("div"); // create div for each row
-            row.setAttribute("class", "row");
+        for (let i = 0; i < this.jogo.tabuleiro.tabuleiro.length; i++) {
+            const element = this.jogo.tabuleiro.tabuleiro[i];
+            let linha = document.createElement("div"); // create div for each linha
+            linha.setAttribute("class", "linha");
 
             for (let j = 0; j < element.length; j++) {
                 let col = document.createElement("div"); // create div for each case
-                let piece = document.createElement("div");
+                let dama = document.createElement("div");
                 let caseType = "";
-                let occupied = "";
+                let ocupado = "";
 
                 if (i % 2 === 0) {
                     if (j % 2 === 0) {
@@ -35,91 +35,92 @@ class UI {
                     }
                 }
 
-                // add the piece if the case isn't empty
-                if (this.game.board.board[i][j] === 1) {
-                    occupied = "whitePiece";
-                } else if (this.game.board.board[i][j] === -1) {
-                    occupied = "blackPiece";
+                // add the dama if the case isn't empty
+                if (this.jogo.tabuleiro.tabuleiro[i][j] === 1) {
+                    ocupado = "damaBranca";
+                } else if (this.jogo.tabuleiro.tabuleiro[i][j] === -1) {
+                    ocupado = "damaPreta";
                 } else {
-                    occupied = "empty";
+                    ocupado = "empty";
                 }
 
-                piece.setAttribute("class", "occupied " + occupied);
+                dama.setAttribute("class", "ocupado " + ocupado);
 
-                // set row and colum in the case
-                piece.setAttribute("row", i);
-                piece.setAttribute("column", j);
-                piece.setAttribute("data-position", i + "-" + j);
+                // set linha and colum in the case
+                dama.setAttribute("linha", i);
+                dama.setAttribute("coluna", j);
+                dama.setAttribute("data-position", i + "-" + j);
 
-                //add event listener to each piece
-                piece.addEventListener("click", (event) => {
-                    if (this.game.currentPlayer === -1 && this.game.iaEnabled) {
+                //add event listener to each dama
+                dama.addEventListener("click", (event) => {
+                    if (this.jogo.jogadorAtual === -1 && this.jogo.iaAtivada) {
                         // Se for a vez da IA jogar, não fazer nada ao clicar na peça preta
                         return;
                     }
-                    // Caso contrário, chamar a função movePiece normalmente
-                    this.game.movePiece(event);
+                    // Caso contrário, chamar a função movedama normalmente
+                    this.jogo.moverDama(event);
                 });
 
-                col.appendChild(piece);
+                col.appendChild(dama);
 
-                col.setAttribute("class", "column " + caseType);
-                row.appendChild(col);
+                col.setAttribute("class", "coluna " + caseType);
+                linha.appendChild(col);
 
-                // counter number of each piece
-                if (this.game.board.board[i][j] === -1) {
+                // counter number of each dama
+                if (this.jogo.tabuleiro.tabuleiro[i][j] === -1) {
                     black++;
-                } else if (this.game.board.board[i][j] === 1) {
+                } else if (this.jogo.tabuleiro.tabuleiro[i][j] === 1) {
                     white++;
                 }
 
-                //display the number of piece for each player
+                //display the number of dama for each player
                 this.displayCounter(black, white);
             }
 
-            this.gameElement.appendChild(row);
+            this.jogoElemento.appendChild(linha);
         }
 
-        if (this.game.gameStarted && (black === 0 || white === 0)) {
-            this.modalOpen(black);
+        if (this.jogo.jogoIniciar && (black === 0 || white === 0)) {
+            this.modeloOpen(black);
         }
     }
 
-    displayCurrentPlayer() {
-        var container = document.getElementById("next-player");
-        if (container.classList.contains("whitePiece")) {
-            container.setAttribute("class", "occupied blackPiece");
+    showJogadorAtual() {
+        var container = document.getElementById("proximo-jogador");
+        if (container.classList.contains("damaBranca")) {
+            container.setAttribute("class", "ocupado damaPreta");
         } else {
-            container.setAttribute("class", "occupied whitePiece");
+            container.setAttribute("class", "ocupado damaBranca");
         }
     }
 
-    markPossiblePosition(p, player = 0, direction = 0) {
-        let attribute = parseInt(p.row + player) + "-" + parseInt(p.column + direction);
-
-        let position = document.querySelector("[data-position='" + attribute + "']");
-        if (position) {
-            position.style.background = "green";
-            // // save where it can move
-            this.game.posNewPosition.push(new Piece(p.row + player, p.column + direction));
+    marcarPosicoesPossiveis(posicaoAtual, direcaoVertical = 0, direcaoHorizontal = 0) {
+        const novaLinha = posicaoAtual.linha + direcaoVertical;
+        const novaColuna = posicaoAtual.coluna + direcaoHorizontal;
+    
+        const posicao = document.querySelector(`[data-position='${novaLinha}-${novaColuna}']`);
+        if (posicao) {
+            posicao.style.background = "green";
+            // Salvar onde pode mover
+            this.jogo.novaPosicao.push(new Dama(novaLinha, novaColuna));
         }
     }
 
     displayCounter(black, white) {
-        var blackContainer = document.getElementById("black-player-count-pieces");
-        var whiteContainer = document.getElementById("white-player-count-pieces");
+        var blackContainer = document.getElementById("contador-damasPretas");
+        var whiteContainer = document.getElementById("contador-damasBrancas");
         blackContainer.innerHTML = black;
         whiteContainer.innerHTML = white;
     }
 
-    modalOpen(black) {
-        document.getElementById("winner").innerHTML = black === 0 ? "White" : "Black";
-        document.getElementById("loser").innerHTML = black !== 0 ? "White" : "Black";
-        this.modal.classList.add("effect");
+    modeloOpen(black) {
+        document.getElementById("vencedor").innerHTML = black === 0 ? "White" : "Black";
+        document.getElementById("perdedor").innerHTML = black !== 0 ? "White" : "Black";
+        this.modelo.classList.add("effect");
     }
 
-    modalClose() {
-        this.modal.classList.remove("effect");
+    fecharModelo() {
+        this.modelo.classList.remove("effect");
     }
 }
 export default UI;

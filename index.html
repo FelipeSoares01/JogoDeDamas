@@ -27,30 +27,30 @@
         </nav>
     </header>
     <div class="container">
-        <div class="next-player counter">
+        <div class="proximo-jogador contador">
             Vez da dama:
-            <div class="occupied whitePiece" id="next-player"></div>
+            <div class="ocupado damaBranca" id="proximo-jogador"></div>
         </div>
-        <div class="game" id="game"></div>
-        <div class="counter">
+        <div class="jogo" id="jogo"></div>
+        <div class="contador">
             <div>
-                <div class="occupied whitePiece"></div>
-                <span id="white-player-count-pieces">10</span>
+                <div class="ocupado damaBranca"></div>
+                <span id="contador-damasBrancas">10</span>
             </div>
             <div>
-                <div class="occupied blackPiece"></div>
-                <span id="black-player-count-pieces">10</span>
+                <div class="ocupado damaPreta"></div>
+                <span id="contador-damasPretas">10</span>
             </div>
         </div>
     </div>
-    <div id="easyModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-body">
-                <p>O jogador da dama <strong id="winner"></strong> ganhou !!</p>
-                <p> <span id="loser"></span>, gostaria de uma revanche ???</p>
+    <div id="modeloInicial" class="modelo">
+        <div class="modelo-content">
+            <div class="modelo-body">
+                <p>O jogador da dama <strong id="vencedor"></strong> ganhou !!</p>
+                <p> <span id="perdedor"></span>, gostaria de uma revanche ???</p>
                 <div class="btn-container">
                     <button class="btn" onclick="location.reload()">Sim</button>
-                    <button class="btn" onclick="modalClose()">Não</button>
+                    <button class="btn" onclick="fecharModelo()">Não</button>
                 </div>
             </div>
         </div>

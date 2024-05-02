@@ -1,6 +1,6 @@
-class Board {
-    constructor(addPieces = true) {
-        this.board = [
+class Tabuleiro {
+    constructor(addDamas = true) {
+        this.tabuleiro = [
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -13,8 +13,8 @@ class Board {
             [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
         ]
 
-        if (addPieces) {
-            this.board = [
+        if (addDamas) {
+            this.tabuleiro = [
                 [0, -1, 0, -1, 0, -1, 0, -1, 0, -1],
                 [-1, 0, -1, 0, -1, 0, -1, 0, -1, 0],
                 [0, -1, 0, -1, 0, -1, 0, -1, 0, -1],
@@ -29,4 +29,4 @@ class Board {
         }
     }
 }
-export default Board
+export default Tabuleiro

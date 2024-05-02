@@ -67,7 +67,7 @@ nav div{
     gap: 30px;
 }
 
-.counter {
+.contador {
     display: flex;
     gap: 20px;
     background-color: #ecc59a;
@@ -76,35 +76,35 @@ nav div{
     border-radius: 5px;
 }
 
-.counter div {
+.contador div {
     display: flex;
     align-items: center;
     gap: 10px;
 }
 
-.next-player {
+.proximo-jogador{
     display: flex;
     align-items: center;
     gap: 15px;
     font-size: 20px;
 }
 
-.occupied {
+.ocupado {
     width: 30px;
     height: 30px;
     border-radius: 50%;
 }
 
-.occupied.whitePiece {
+.ocupado.damaBranca {
     background-color: white;
 }
 
-.occupied.blackPiece {
+.ocupado.damaPreta {
     background-color: black;
 }
 
 
-.game {
+.jogo {
     background-color: #4c382e;
     width: 500px;
     height: 500px;
@@ -112,13 +112,13 @@ nav div{
     flex-direction: column;
 }
 
-.game .row {
+.jogo .linha {
     width: 100%;
     height: 10%;
     display: flex;
 }
 
-.game .row .column {
+.jogo .linha .coluna {
     width: 10%;
     height: 100%;
     display: flex;
@@ -126,25 +126,25 @@ nav div{
     justify-content: center;
 }
 
-.game .row .column .occupied {
+.jogo .linha .coluna .ocupado {
     width: 80%;
     height: 80%;
     border-radius: 50%;
 }
 
-.game .row .column .occupied.blackPiece {
+.jogo .linha .coluna .ocupado.damaPreta {
     background-color: black;
 }
 
-.game .row .column .occupied.whitePiece {
+.jogo .linha .coluna .ocupado.damaBranca {
     background-color: white;
 }
 
-.game .row .column.whiteCase {
+.jogo .linha .coluna.whiteCase {
     background-color: #4c382e;
 }
 
-.game .row .column.blackCase {
+.jogo .linha .coluna.blackCase {
     background-color: #ecc59a;
 }
 
@@ -158,7 +158,7 @@ button {
     border: none;
 }
 
-.modal {
+.modelo {
     position: fixed;
     z-index: 1;
     left: 0;
@@ -177,7 +177,7 @@ button {
     opacity: 1;
 }
 
-.modal-content {
+.modelo-content {
     position: fixed;
     z-index: 2;
     left: 50%;
@@ -187,19 +187,19 @@ button {
     border-radius: 20px;
 }
 
-.modal-body {
+.modelo-body {
     padding: 5em;
     color: black;
 }
 
-.modal-body p {
+.modelo-body p {
     text-align: center;
     font-size: 16px;
     letter-spacing: 0.1em;
     color: black;
 }
 
-.modalClose {
+.fecharModelo {
     margin: 0;
     padding: 0;
     border: 0;
@@ -209,8 +209,8 @@ button {
     height: 40px;
 }
 
-.modalClose:before,
-.modalClose:after {
+.fecharModelo:before,
+.fecharModelo:after {
     content: "";
     position: absolute;
     top: 18px;
@@ -221,15 +221,15 @@ button {
     border-radius: 4px;
 }
 
-.modalClose:before {
+.fecharModelo:before {
     transform: rotate(45deg);
 }
 
-.modalClose:after {
+.fecharModelo:after {
     transform: rotate(-45deg);
 }
 
-.modal .btn-container {
+.modelo .btn-container {
     margin-top: 50px;
     display: flex;
     align-items: center;
@@ -237,7 +237,7 @@ button {
     gap: 20px;
 }
 
-.modal .btn {
+.modelo .btn {
     background-color: #4c382e;
     color: white;
     padding: 10px 40px;
